@@ -98,7 +98,7 @@ const LocationSection = () => {
 
               {/* CTA Button */}
               <motion.a
-                href="https://maps.google.com/?q=Sítio+Montanha+do+Coiote+Caeté+MG"
+                href="https://maps.google.com/?q=-19.7291781,-43.6495772"
                 target="_blank"
                 rel="noopener noreferrer"
                 initial={{ opacity: 0, y: 20 }}
@@ -122,7 +122,7 @@ const LocationSection = () => {
           >
             <div className="bg-muted rounded-xl overflow-hidden shadow-elevated h-full relative">
               <iframe
-                src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d60116.92775285547!2d-43.66937762089844!3d-19.880693!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0xa696bedf60ab25%3A0x53fb87cf1e6e9fa3!2sCaet%C3%A9%2C%20MG!5e0!3m2!1spt-BR!2sbr!4v1708456789"
+                src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3751.8433422288766!2d-43.65215210000001!3d-19.7291781!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0xa5d380e6a357c9%3A0xa7facf75d6ed185a!2sSítio%20Montanhas%20do%20Coiote!5e0!3m2!1spt-BR!2sbr!4v1704067200"
                 width="100%"
                 height="100%"
                 style={{ border: 0, minHeight: "400px" }}

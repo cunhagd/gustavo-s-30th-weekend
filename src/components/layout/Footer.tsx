@@ -14,8 +14,8 @@ const Footer = () => {
         >
           {/* Logo */}
           <div className="mb-6">
-            <span className="font-display text-4xl text-primary-foreground">G</span>
-            <span className="font-display text-4xl text-gradient-gold">30</span>
+            <span className="font-display text-4xl text-primary-foreground">Gustavo </span>
+            <span className="font-display text-4xl text-gradient-gold">30tou</span>
           </div>
 
           {/* Dates */}
@@ -47,7 +47,7 @@ const Footer = () => {
 
           {/* Copyright */}
           <p className="font-body text-xs text-primary-foreground/40">
-            © 2026 • Com carinho, Gustavo
+            Com carinho, Gustavo!
           </p>
         </motion.div>
       </div>

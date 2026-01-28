@@ -22,7 +22,7 @@ const features = [
   {
     icon: Clock,
     title: "Check-in & Check-out",
-    description: "Sexta, 17h às Domingo, 17h."
+    description: "Sexta às 17h - Domingo às 17h."
   }
 ];
 

@@ -6,12 +6,12 @@ const checklist = [
   {
     icon: Shirt,
     title: "Traje",
-    description: "Leve roupa de banho! A festa de sábado acontece ao redor da piscina. Para a noite, leve um agasalho leve (clima de montanha)."
+    description: "Leve roupa de banho! A festa de sábado acontece ao redor da piscina. Para a noite, leve um agasalho leve (climinha de montanha)."
   },
   {
     icon: BedDouble,
-    title: "Itens Pessoais",
-    description: "O sítio não fornece roupa de cama e banho. Por favor, leve seu kit (lençol, travesseiro, toalha)."
+    title: "Levar na Necessaire",
+    description: "Estaremos em amebiente de mata, é importante não esquecer do repelente e o protetor solar para a piscina."
   }
 ];
 
@@ -94,7 +94,7 @@ const RSVPSection = () => {
                 Confirmação de Presença
               </h3>
               <p className="font-body text-muted-foreground text-lg mb-8 max-w-xl mx-auto">
-                Para organizarmos as suítes e o buffet com perfeição, confirme sua presença até <strong className="text-foreground">28 de Fevereiro de 2026</strong>.
+                Para organizarmos as suítes e o buffet com perfeição, confirme sua presença até <strong className="text-foreground">15 de Fevereiro de 2026</strong>.
               </p>
 
               <motion.a
@@ -119,11 +119,10 @@ const RSVPSection = () => {
             className="text-center mt-16"
           >
             <p className="font-display text-3xl md:text-4xl text-foreground italic mb-4">
-              "Mal posso esperar para celebrar com vocês!"
+              Ficarei muito feliz se você for!
             </p>
             <div className="flex items-center justify-center gap-4 mt-8">
               <span className="h-px w-16 bg-gold" />
-              <span className="font-display text-4xl text-gradient-gold">G</span>
               <span className="h-px w-16 bg-gold" />
             </div>
           </motion.div>

@@ -3,18 +3,38 @@ import { useRef } from "react";
 import { UtensilsCrossed, Wine, Beer, GlassWater } from "lucide-react";
 import churrascoImage from "@/assets/churrasco.jpg";
 
+const getMealLabel = (text: string) => {
+  const keywords = ["Jantar:", "Café da Manhã:", "Almoço:"];
+  let result: (string | JSX.Element)[] = [];
+  let lastIndex = 0;
+
+  for (const keyword of keywords) {
+    const index = text.indexOf(keyword);
+    if (index !== -1) {
+      result.push(text.substring(lastIndex, index));
+      result.push(<strong key={keyword}>{keyword}</strong>);
+      lastIndex = index + keyword.length;
+    }
+  }
+  
+  if (lastIndex === 0) return text;
+  result.push(text.substring(lastIndex));
+  return result;
+};
+
 const meals = [
-  { label: "Café da Manhã", description: "Pão de queijo, quitandas mineiras, bolos, frios e sucos" },
-  { label: "Sexta (Jantar)", description: "Strogonoff clássico com batata palha artesanal" },
-  { label: "Sábado (O Churrasco)", description: "Costelão, Picanha (Bovina e Suína), Contra Filé, Linguiça, Coraçãozinho • Queijo coalho, Pão de alho" },
-  { label: "Domingo (Almoço)", description: "Franguinho ensopado com a famosa macarronese" }
+  { label: "🟤 Jantar: Sexta-feira", description: "Strogonoff de frango com champignon, arroz e batata palha" },
+  { label: "🟢🟣Café da Manhã: Sábado e Domingo", description: "Pão de queijo, misto quente, ovos mexidos, queijos, bolos, café, leite e sucos" },
+  { label: "🟢 Almoço: Sábado", description: "Costelão bovino, Picanha (Bovina e Suína), Contra Filé, Linguiça, Coraçãozinho Queijo Coalho, Pão de Alho • \nArroz, vinagrete e farofa especial" },
+  { label: "🟢 Jantar: Sábado", description: "Sopão especial de churrasco" },
+  { label: "🟣 Almoço: Domingo", description: "Franguinho ensopado com macarronese" }
 ];
 
 const drinks = [
-  { icon: Beer, label: "Cerveja", items: "Heineken (Original)" },
-  { icon: Wine, label: "Vinhos", items: "Tinto Tarapacá Cosecha & Rosé Casal Mendes" },
-  { icon: GlassWater, label: "Destilados", items: "Whisky Jack Daniel's & Gin Tanqueray" },
-  { icon: GlassWater, label: "Refresh", items: "Coca-Cola, Guaraná (Normal/Zero), Água Tônica e Sucos" }
+  { icon: Beer, label: "Cerveja", items: "Heineken" },
+  { icon: Wine, label: "Vinhos", items: "Tinto, Branco e Rosé" },
+  { icon: GlassWater, label: "Destilados", items: "Whisky Jack Daniel's, Gin Tanqueray e Cachaça Salinas" },
+  { icon: GlassWater, label: "Refresh", items: "Coca-Cola (Normal/Zero), Guaraná (Normal/Zero), Sucos, Água Tônica, Água com Gás e Água sem Gás" }
 ];
 
 const GastronomySection = () => {
@@ -76,7 +96,7 @@ const GastronomySection = () => {
                   className="p-4 bg-card rounded-lg border border-border hover:border-gold/20 transition-colors"
                 >
                   <h4 className="font-display text-lg text-foreground mb-1">
-                    {meal.label}
+                    {getMealLabel(meal.label)}
                   </h4>
                   <p className="font-body text-sm text-muted-foreground">
                     {meal.description}
@@ -96,7 +116,7 @@ const GastronomySection = () => {
               <div className="flex items-center justify-center gap-3 mb-8">
                 <Wine className="w-8 h-8 text-gold" />
                 <h3 className="font-display text-3xl text-foreground">
-                  Premium Open Bar
+                  Open Bar
                 </h3>
               </div>
 
@@ -127,7 +147,7 @@ const GastronomySection = () => {
               {/* Decorative */}
               <div className="mt-8 pt-6 border-t border-primary/10 text-center">
                 <p className="font-display text-lg text-muted-foreground italic">
-                  "Bebida gelada, comida de qualidade e boa companhia"
+                  Você será o seu próprio bartender!
                 </p>
               </div>
             </div>

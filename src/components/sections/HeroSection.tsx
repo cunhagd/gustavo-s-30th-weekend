@@ -46,7 +46,7 @@ const HeroSection = () => {
         >
           <span className="h-px w-12 bg-gold-soft" />
           <span className="font-display text-7xl md:text-8xl lg:text-9xl text-gradient-gold font-semibold">
-            30
+            30tou
           </span>
           <span className="h-px w-12 bg-gold-soft" />
         </motion.div>
@@ -57,7 +57,7 @@ const HeroSection = () => {
           transition={{ duration: 0.8, delay: 1 }}
           className="font-display text-3xl md:text-4xl text-cream/90 italic tracking-wide"
         >
-          Weekend Celebration
+          Weeked Celebration
         </motion.p>
 
         <motion.div

@@ -13,35 +13,35 @@ const days = [
       { time: "17h", title: "Início da Hospedagem & Check-in" },
       { 
         time: "21h", 
-        title: "Jantar de Boas-vindas",
+        title: "🍷🔥 Jantar Especial - Noite de Strogonoff & Vinhos ",
         special: true,
-        specialNote: "🥂 Celebração especial dos 39 anos de casamento de Henrique & Soraia"
+        specialNote: "🥂 Celebração dos 39 anos de casamento de Henrique & Soraia"
       }
     ]
   },
   {
     day: "SÁBADO",
     date: "14.03",
-    theme: "The Party",
-    subtitle: "B-Day",
+    theme: "Aniversário",
+    subtitle: "Pool Party",
     icon: PartyPopper,
     events: [
-      { time: "07h", title: "Café da Manhã" },
-      { time: "11h", title: "Início do Churrasco na Piscina (Pool Party)" },
-      { time: "14h às 18h", title: "Show Sertanejo Ao Vivo" },
-      { time: "18h em diante", title: "Karaokê Liberado & Resenha" },
-      { time: "22h", title: "Jantar Tira-Ressaca" }
+      { time: "07h", title: "☕ Café da Manhã" },
+      { time: "11h", title: "🍖🏊🏻Início do Churrasco na Piscina" },
+      { time: "12h às 15h", title: "🎶 Show Sertanejo Ao Vivo" },
+      { time: "18h em diante", title: "🎤 Karaokê Liberado" },
+      { time: "22h", title: "🍽️ Jantar Anti-Ressaca" }
     ]
   },
   {
     day: "DOMINGO",
     date: "15.03",
-    theme: "Relax & Departure",
+    theme: "Relaxamento & Despedida",
     icon: Sun,
     events: [
-      { time: "07h", title: "Café da Manhã" },
-      { time: "12h", title: "Almoço de Despedida" },
-      { time: "17h", title: "Encerramento e Check-out" }
+      { time: "07h", title: "☕ Café da Manhã" },
+      { time: "12h", title: "🥘 Almoço de Despedida" },
+      { time: "17h", title: "⏳ Encerramento e Check-out" }
     ]
   }
 ];

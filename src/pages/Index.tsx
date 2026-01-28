@@ -3,6 +3,7 @@ import Footer from "@/components/layout/Footer";
 import HeroSection from "@/components/sections/HeroSection";
 import ConceptSection from "@/components/sections/ConceptSection";
 import VenueSection from "@/components/sections/VenueSection";
+import GallerySection from "@/components/sections/GallerySection";
 import ScheduleSection from "@/components/sections/ScheduleSection";
 import GastronomySection from "@/components/sections/GastronomySection";
 import LocationSection from "@/components/sections/LocationSection";
@@ -22,6 +23,10 @@ const Index = () => {
         
         <div id="local">
           <VenueSection />
+        </div>
+        
+        <div id="galeria">
+          <GallerySection />
         </div>
         
         <div id="programacao">

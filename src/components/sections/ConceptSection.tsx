@@ -39,18 +39,18 @@ const ConceptSection = () => {
             className="lg:pl-8"
           >
             <h2 className="font-display text-4xl md:text-5xl lg:text-6xl text-primary mb-8 line-decoration">
-              3 Dias. Natureza. Amigos.
+              3 Dias. Natureza. Diversão.
             </h2>
             
             <div className="space-y-6 text-muted-foreground font-body text-lg leading-relaxed">
               <p>
-                Para celebrar meus 30 anos, escolhi um refúgio cercado pela mata atlântica. 
+                Para celebrar meus 30 anos, escolhi um refúgio cercado pela mata. 
                 Quero compartilhar com vocês um final de semana de <span className="text-foreground font-medium">desconexão da rotina</span> e 
-                <span className="text-foreground font-medium"> conexão com o que importa</span>: boa música, gastronomia de primeira e nossa amizade.
+                <span className="text-foreground font-medium"> conexão com o que importa</span>: boa música, comida boa e nossa amizade!
               </p>
               
               <p>
-                Prepare-se para dias de sol, piscina e um céu estrelado incrível.
+                Prepare-se para dias de sol, piscina e paz.
               </p>
             </div>
 
@@ -61,10 +61,9 @@ const ConceptSection = () => {
               className="mt-10 p-6 bg-card rounded-lg border border-gold/20 shadow-soft"
             >
               <p className="font-display text-2xl text-primary italic text-center">
-                "Você é meu convidado especial."
+                "A felicidade só é real quando compartilhada."
               </p>
               <p className="text-center mt-3 font-body text-gold text-sm tracking-widest uppercase">
-                — Gustavo
               </p>
             </motion.div>
           </motion.div>
