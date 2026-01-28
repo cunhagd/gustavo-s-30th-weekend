@@ -17,7 +17,7 @@ interface RSVPModalProps {
 const API_URL = import.meta.env.VITE_API_URL || "http://localhost:3001/api";
 
 const RSVPModal = ({ isOpen, onClose }: RSVPModalProps) => {
-  const [step, setStep] = useState<"name" | "age" | "phone" | "ddd" | "number" | "children-count" | "children" | "stay" | "day" | "confirmation">("name");
+  const [step, setStep] = useState<"name" | "age" | "phone" | "ddd" | "number" | "has-children" | "children-count" | "children" | "stay" | "day" | "confirmation">("name");
   const [isLoading, setIsLoading] = useState(false);
   const [error, setError] = useState("");
 
@@ -26,6 +26,7 @@ const RSVPModal = ({ isOpen, onClose }: RSVPModalProps) => {
   const [age, setAge] = useState("");
   const [phoneDDD, setPhoneDDD] = useState("");
   const [phoneNumber, setPhoneNumber] = useState("");
+  const [hasChildrenFlag, setHasChildrenFlag] = useState<boolean | null>(null);
   const [childrenCount, setChildrenCount] = useState(0);
   const [children, setChildren] = useState<Child[]>([]);
   const [currentChildIndex, setCurrentChildIndex] = useState(0);
@@ -38,7 +39,8 @@ const RSVPModal = ({ isOpen, onClose }: RSVPModalProps) => {
   const isAgeValid = age && !isNaN(Number(age)) && Number(age) > 0 && Number(age) <= 120;
   const isDDDValid = phoneDDD.length === 2 && /^\d{2}$/.test(phoneDDD);
   const isPhoneValid = (phoneNumber.length === 8 || phoneNumber.length === 9) && /^\d{8,9}$/.test(phoneNumber);
-  const isChildrenCountValid = childrenCount >= 0;
+  const isHasChildrenValid = hasChildrenFlag !== null;
+  const isChildrenCountValid = childrenCount > 0;
   const isCurrentChildValid = currentChildIndex < children.length ? children[currentChildIndex]?.name?.trim() && children[currentChildIndex]?.age : true;
   const isStayValid = willStay !== null;
   const isDayValid = !willStay || (willStay && arrivalDay !== "");
@@ -84,7 +86,15 @@ const RSVPModal = ({ isOpen, onClose }: RSVPModalProps) => {
         setError("Número deve ter 8 ou 9 dígitos");
         return;
       }
-      setStep("children-count");
+      setStep("has-children");
+    } else if (step === "has-children") {
+      if (childrenCount > 0) {
+        setChildren(Array.from({ length: childrenCount }, () => ({ name: "", age: 0 })));
+        setCurrentChildIndex(0);
+        setStep("children-count");
+      } else {
+        setStep("stay");
+      }
     } else if (step === "children-count") {
       if (childrenCount > 0) {
         setChildren(Array.from({ length: childrenCount }, () => ({ name: "", age: 0 })));
@@ -132,8 +142,8 @@ const RSVPModal = ({ isOpen, onClose }: RSVPModalProps) => {
         "phone",
         "ddd",
         "number",
-        "children-count",
-        ...(childrenCount > 0 ? ["children"] : []),
+        "has-children",
+        ...(hasChildrenFlag ? ["children-count", "children"] : []),
         "stay",
         ...(willStay ? ["day"] : []),
         "confirmation",
@@ -162,8 +172,8 @@ const RSVPModal = ({ isOpen, onClose }: RSVPModalProps) => {
           name,
           age: Number(age),
           phone,
-          hasChildren: childrenCount > 0,
-          children: childrenCount > 0 ? children : [],
+          hasChildren: hasChildrenFlag,
+          children: hasChildrenFlag ? children : [],
           willStay,
           arrivalDay: willStay ? arrivalDay : undefined,
         }),
@@ -196,6 +206,7 @@ const RSVPModal = ({ isOpen, onClose }: RSVPModalProps) => {
     setAge("");
     setPhoneDDD("");
     setPhoneNumber("");
+    setHasChildrenFlag(null);
     setChildrenCount(0);
     setChildren([]);
     setCurrentChildIndex(0);
@@ -219,6 +230,8 @@ const RSVPModal = ({ isOpen, onClose }: RSVPModalProps) => {
         return isDDDValid;
       case "number":
         return isPhoneValid;
+      case "has-children":
+        return isHasChildrenValid;
       case "children-count":
         return isChildrenCountValid;
       case "children":
@@ -271,15 +284,16 @@ const RSVPModal = ({ isOpen, onClose }: RSVPModalProps) => {
                   <div className="flex items-center justify-between mb-2">
                     <p className="text-sm text-muted-foreground">Etapa</p>
                     <p className="text-sm font-semibold text-primary">
-                      {step === "name" && "1/9"}
-                      {step === "age" && "2/9"}
-                      {step === "phone" && "3/9"}
-                      {step === "ddd" && "4/9"}
-                      {step === "number" && "5/9"}
-                      {step === "children-count" && "6/9"}
-                      {step === "children" && `6+${currentChildIndex + 1}/${childrenCount}`}
-                      {step === "stay" && "7/9"}
-                      {step === "day" && "8/9"}
+                      {step === "name" && "1/10"}
+                      {step === "age" && "2/10"}
+                      {step === "phone" && "3/10"}
+                      {step === "ddd" && "4/10"}
+                      {step === "number" && "5/10"}
+                      {step === "has-children" && "6/10"}
+                      {step === "children-count" && "7/10"}
+                      {step === "children" && `7+${currentChildIndex + 1}/${childrenCount}`}
+                      {step === "stay" && "8/10"}
+                      {step === "day" && "9/10"}
                     </p>
                   </div>
                   <div className="w-full h-2 bg-gray-200 rounded-full overflow-hidden">
@@ -287,7 +301,7 @@ const RSVPModal = ({ isOpen, onClose }: RSVPModalProps) => {
                       layoutId="progress"
                       className="h-full bg-gradient-to-r from-primary to-gold"
                       initial={{ width: "0%" }}
-                      animate={{ width: `${((step === "children" ? 6 + (currentChildIndex + 1) / childrenCount : ["name", "age", "phone", "ddd", "number", "children-count", "stay", "day"].indexOf(step) + 1) / 9) * 100}%` }}
+                      animate={{ width: `${((step === "children" ? 7 + (currentChildIndex + 1) / childrenCount : ["name", "age", "phone", "ddd", "number", "has-children", "children-count", "stay", "day"].indexOf(step) + 1) / 10) * 100}%` }}
                       transition={{ duration: 0.5 }}
                     />
                   </div>
@@ -423,6 +437,41 @@ const RSVPModal = ({ isOpen, onClose }: RSVPModalProps) => {
                 </motion.div>
               )}
 
+              {/* Has Children Step */}
+              {step === "has-children" && (
+                <motion.div
+                  initial={{ opacity: 0, y: 10 }}
+                  animate={{ opacity: 1, y: 0 }}
+                  exit={{ opacity: 0, y: -10 }}
+                >
+                  <h2 className="text-3xl font-display text-primary mb-2">Você levará crianças?</h2>
+                  <p className="text-muted-foreground mb-6">Trará alguma criança com você?</p>
+                  <div className="flex gap-4">
+                    {[true, false].map((value) => (
+                      <button
+                        key={String(value)}
+                        onClick={() => {
+                          setHasChildrenFlag(value);
+                          if (!value) {
+                            setChildrenCount(0);
+                            setChildren([]);
+                          }
+                          setError("");
+                        }}
+                        className={`flex-1 py-4 px-4 rounded-lg border-2 font-semibold transition-all text-lg ${
+                          hasChildrenFlag === value
+                            ? "border-gold bg-gold/10 text-primary"
+                            : "border-border text-muted-foreground hover:border-gold/50"
+                        }`}
+                      >
+                        {value ? "Sim" : "Não"}
+                      </button>
+                    ))}
+                  </div>
+                  {error && <div className="text-destructive text-sm mt-4">{error}</div>}
+                </motion.div>
+              )}
+
               {/* Children Count Step */}
               {step === "children-count" && (
                 <motion.div
@@ -430,18 +479,18 @@ const RSVPModal = ({ isOpen, onClose }: RSVPModalProps) => {
                   animate={{ opacity: 1, y: 0 }}
                   exit={{ opacity: 0, y: -10 }}
                 >
-                  <h2 className="text-3xl font-display text-primary mb-2">Você levará crianças?</h2>
-                  <p className="text-muted-foreground mb-6">Quantas crianças você trará?</p>
+                  <h2 className="text-3xl font-display text-primary mb-2">Quantas crianças?</h2>
+                  <p className="text-muted-foreground mb-6">Qual é o número de crianças?</p>
                   <Input
                     type="number"
-                    placeholder="0"
+                    placeholder="1"
                     value={childrenCount}
                     onChange={(e) => {
                       const value = Number(e.target.value);
-                      setChildrenCount(Math.max(0, Math.min(value, 10)));
+                      setChildrenCount(Math.max(1, Math.min(value, 10)));
                       setError("");
                     }}
-                    min="0"
+                    min="1"
                     max="10"
                     className="border-2 focus:border-gold mb-4 text-center text-3xl font-bold"
                     autoFocus
