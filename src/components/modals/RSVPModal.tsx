@@ -109,7 +109,7 @@ const RSVPModal = ({ isOpen, onClose }: RSVPModalProps) => {
       }
 
       const data = await response.json();
-      setGuestId(data.guest._id);
+      setGuestId(data.guest.id);
       setStep("confirmation");
     } catch (err) {
       setError(err instanceof Error ? err.message : "Erro desconhecido");
