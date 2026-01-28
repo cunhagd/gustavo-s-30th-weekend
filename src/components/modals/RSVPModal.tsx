@@ -153,7 +153,7 @@ const RSVPModal = ({ isOpen, onClose }: RSVPModalProps) => {
           hasChildren: false,
           children: [],
           willStay: willStay === true,
-          arrivalDay: willStay ? arrivalDay : undefined,
+          arrivalDay: willStay ? arrivalDay : null,
         }),
       });
 
