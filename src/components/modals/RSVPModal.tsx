@@ -694,21 +694,23 @@ const RSVPModal = ({ isOpen, onClose }: RSVPModalProps) => {
                       Voltar
                     </Button>
                   )}
-                  <Button
-                    onClick={step === "day" || (step === "stay" && !willStay) ? handleSubmit : handleNextStep}
-                    disabled={!isStepComplete() || isLoading}
-                    className="flex-1 bg-primary text-primary-foreground hover:opacity-90 disabled:opacity-50 py-3 flex items-center justify-center gap-2"
-                  >
-                    {step === "day" || (step === "has-children" && !hasChildrenFlag) || (step === "children" && currentChildIndex === childrenCount - 1) ? (
-                      <>
-                        {isLoading ? "Confirmando..." : "Confirmar"}
-                      </>
-                    ) : (
-                      <>
-                        Próximo <ChevronRight className="w-5 h-5" />
-                      </>
-                    )}
-                  </Button>
+                  {step !== "has-children" && (
+                    <Button
+                      onClick={step === "day" || (step === "stay" && !willStay) ? handleSubmit : handleNextStep}
+                      disabled={!isStepComplete() || isLoading}
+                      className="flex-1 bg-primary text-primary-foreground hover:opacity-90 disabled:opacity-50 py-3 flex items-center justify-center gap-2"
+                    >
+                      {step === "day" || (step === "children" && currentChildIndex === childrenCount - 1) ? (
+                        <>
+                          {isLoading ? "Confirmando..." : "Confirmar"}
+                        </>
+                      ) : (
+                        <>
+                          Próximo <ChevronRight className="w-5 h-5" />
+                        </>
+                      )}
+                    </Button>
+                  )}
                 </div>
               )}
 
