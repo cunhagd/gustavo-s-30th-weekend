@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import { X, ChevronRight, CheckCircle, Send } from "lucide-react";
 import { Button } from "@/components/ui/button";
@@ -58,6 +58,21 @@ const RSVPModal = ({ isOpen, onClose }: RSVPModalProps) => {
     setChildren(newChildren);
   };
 
+  // Auto-advance quando responde has-children
+  useEffect(() => {
+    if (step === "has-children" && hasChildrenFlag !== null) {
+      const timer = setTimeout(() => {
+        if (hasChildrenFlag) {
+          setChildrenCount(0);
+          setStep("children-count");
+        } else {
+          setStep("confirmation");
+        }
+      }, 300);
+      return () => clearTimeout(timer);
+    }
+  }, [step, hasChildrenFlag]);
+
   const handleNextStep = () => {
     setError("");
 
@@ -103,13 +118,6 @@ const RSVPModal = ({ isOpen, onClose }: RSVPModalProps) => {
         return;
       }
       setStep("has-children");
-    } else if (step === "has-children") {
-      if (hasChildrenFlag) {
-        setChildrenCount(0);
-        setStep("children-count");
-      } else {
-        setStep("confirmation");
-      }
     } else if (step === "children-count") {
       if (childrenCount > 0) {
         setChildren(Array.from({ length: childrenCount }, () => ({ name: "", age: 0 })));
