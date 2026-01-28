@@ -22,18 +22,7 @@ app.get('/health', (req, res) => {
   res.json({ status: 'ok', timestamp: new Date().toISOString() });
 });
 
-// Para SPA (Single Page Application), redirecionar todas as rotas para index.html
-app.get('*', (req, res) => {
+// Para SPA (Single Page Application), redirecionar todas as rotas não encontradas para index.html
+// Usar middleware ao invés de rota wildcard para evitar erro com path-to-regexp
+app.use((req, res) => {
   res.sendFile(path.join(__dirname, 'dist', 'index.html'));
-});
-
-// Tratamento de erros
-app.use((err, req, res, next) => {
-  console.error('Error:', err);
-  res.status(500).json({ error: 'Internal Server Error' });
-});
-
-app.listen(PORT, () => {
-  console.log(`Frontend rodando em http://0.0.0.0:${PORT}`);
-  console.log(`Health check: http://0.0.0.0:${PORT}/health`);
-});
