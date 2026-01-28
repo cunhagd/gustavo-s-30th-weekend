@@ -27,3 +27,12 @@ dist-ssr
 .env
 .env.local
 .env.*.local
+
+# Lock files (let package managers regenerate)
+bun.lockb
+bun.lock
+yarn.lock
+
+# Package manager caches
+.pnpm-store
+.yarn/cache
