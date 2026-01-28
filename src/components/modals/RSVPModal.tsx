@@ -86,33 +86,7 @@ const RSVPModal = ({ isOpen, onClose }: RSVPModalProps) => {
         setError("Número deve ter 8 ou 9 dígitos");
         return;
       }
-      setStep("has-children");
-    } else if (step === "has-children") {
-      if (childrenCount > 0) {
-        setChildren(Array.from({ length: childrenCount }, () => ({ name: "", age: 0 })));
-        setCurrentChildIndex(0);
-        setStep("children-count");
-      } else {
-        setStep("stay");
-      }
-    } else if (step === "children-count") {
-      if (childrenCount > 0) {
-        setChildren(Array.from({ length: childrenCount }, () => ({ name: "", age: 0 })));
-        setCurrentChildIndex(0);
-        setStep("children");
-      } else {
-        setStep("stay");
-      }
-    } else if (step === "children") {
-      if (!isCurrentChildValid) {
-        setError("Preencha o nome e idade do filho");
-        return;
-      }
-      if (currentChildIndex < childrenCount - 1) {
-        setCurrentChildIndex(currentChildIndex + 1);
-      } else {
-        setStep("stay");
-      }
+      setStep("stay");
     } else if (step === "stay") {
       if (!isStayValid) {
         setError("Selecione uma opção");
@@ -128,7 +102,32 @@ const RSVPModal = ({ isOpen, onClose }: RSVPModalProps) => {
         setError("Selecione o dia de chegada");
         return;
       }
-      setStep("confirmation");
+      setStep("has-children");
+    } else if (step === "has-children") {
+      if (hasChildrenFlag) {
+        setChildrenCount(0);
+        setStep("children-count");
+      } else {
+        setStep("confirmation");
+      }
+    } else if (step === "children-count") {
+      if (childrenCount > 0) {
+        setChildren(Array.from({ length: childrenCount }, () => ({ name: "", age: 0 })));
+        setCurrentChildIndex(0);
+        setStep("children");
+      } else {
+        setStep("confirmation");
+      }
+    } else if (step === "children") {
+      if (!isCurrentChildValid) {
+        setError("Preencha o nome e idade da criança");
+        return;
+      }
+      if (currentChildIndex < childrenCount - 1) {
+        setCurrentChildIndex(currentChildIndex + 1);
+      } else {
+        setStep("confirmation");
+      }
     }
   };
 
@@ -142,10 +141,10 @@ const RSVPModal = ({ isOpen, onClose }: RSVPModalProps) => {
         "phone",
         "ddd",
         "number",
-        "has-children",
-        ...(hasChildrenFlag ? ["children-count", "children"] : []),
         "stay",
-        ...(willStay ? ["day"] : []),
+        ...(willStay ? ["day", "has-children"] : []),
+        ...(willStay && hasChildrenFlag ? ["children-count"] : []),
+        ...(willStay && hasChildrenFlag && childrenCount > 0 ? ["children"] : []),
         "confirmation",
       ] as const;
 
@@ -365,8 +364,8 @@ const RSVPModal = ({ isOpen, onClose }: RSVPModalProps) => {
                   animate={{ opacity: 1, y: 0 }}
                   exit={{ opacity: 0, y: -10 }}
                 >
-                  <h2 className="text-3xl font-display text-primary mb-2">Agora seu WhatsApp</h2>
-                  <p className="text-muted-foreground mb-6">Precisamos do seu número para nos contato. Será em duas partes!</p>
+                  <h2 className="text-3xl font-display text-primary mb-2">Seu WhatsApp</h2>
+                  <p className="text-muted-foreground mb-6">Precisamos do seu número para nos contato apenas caso realmente seja necessário. Será em duas partes!</p>
                   <div className="bg-primary/5 rounded-lg p-4 mb-4">
                     <p className="text-sm text-foreground">
                       <strong>Formato:</strong> (XX)XXXXX-XXXX
@@ -434,6 +433,68 @@ const RSVPModal = ({ isOpen, onClose }: RSVPModalProps) => {
                       ⚠️ Número deve ter 8 ou 9 dígitos (você tem: {phoneNumber.length})
                     </div>
                   )}
+                </motion.div>
+              )}
+
+              {/* Will Stay Step */}
+              {step === "stay" && (
+                <motion.div
+                  initial={{ opacity: 0, y: 10 }}
+                  animate={{ opacity: 1, y: 0 }}
+                  exit={{ opacity: 0, y: -10 }}
+                >
+                  <h2 className="text-3xl font-display text-primary mb-2">Você vai dormir lá?</h2>
+                  <p className="text-muted-foreground mb-6">Ficará hospedado?</p>
+                  <div className="flex gap-4">
+                    {[true, false].map((value) => (
+                      <button
+                        key={String(value)}
+                        onClick={() => {
+                          setWillStay(value);
+                          setError("");
+                        }}
+                        className={`flex-1 py-4 px-4 rounded-lg border-2 font-semibold transition-all text-lg ${
+                          willStay === value
+                            ? "border-gold bg-gold/10 text-primary"
+                            : "border-border text-muted-foreground hover:border-gold/50"
+                        }`}
+                      >
+                        {value ? "Sim" : "Não"}
+                      </button>
+                    ))}
+                  </div>
+                  {error && <div className="text-destructive text-sm mt-4">{error}</div>}
+                </motion.div>
+              )}
+
+              {/* Arrival Day Step */}
+              {step === "day" && (
+                <motion.div
+                  initial={{ opacity: 0, y: 10 }}
+                  animate={{ opacity: 1, y: 0 }}
+                  exit={{ opacity: 0, y: -10 }}
+                >
+                  <h2 className="text-3xl font-display text-primary mb-2">Qual dia você chega?</h2>
+                  <p className="text-muted-foreground mb-6">Quando você estará lá?</p>
+                  <div className="space-y-3">
+                    {(["friday", "saturday"] as const).map((day) => (
+                      <button
+                        key={day}
+                        onClick={() => {
+                          setArrivalDay(day);
+                          setError("");
+                        }}
+                        className={`w-full py-4 px-4 rounded-lg border-2 font-semibold transition-all text-lg text-left ${
+                          arrivalDay === day
+                            ? "border-gold bg-gold/10 text-primary"
+                            : "border-border text-muted-foreground hover:border-gold/50"
+                        }`}
+                      >
+                        {day === "friday" ? "Sexta-feira (após as 17h)" : "Sábado (após as 07h)"}
+                      </button>
+                    ))}
+                  </div>
+                  {error && <div className="text-destructive text-sm mt-4">{error}</div>}
                 </motion.div>
               )}
 
@@ -538,68 +599,6 @@ const RSVPModal = ({ isOpen, onClose }: RSVPModalProps) => {
                 </motion.div>
               )}
 
-              {/* Will Stay Step */}
-              {step === "stay" && (
-                <motion.div
-                  initial={{ opacity: 0, y: 10 }}
-                  animate={{ opacity: 1, y: 0 }}
-                  exit={{ opacity: 0, y: -10 }}
-                >
-                  <h2 className="text-3xl font-display text-primary mb-2">Você vai dormir?</h2>
-                  <p className="text-muted-foreground mb-6">Ficará hospedado?</p>
-                  <div className="flex gap-4">
-                    {[true, false].map((value) => (
-                      <button
-                        key={String(value)}
-                        onClick={() => {
-                          setWillStay(value);
-                          setError("");
-                        }}
-                        className={`flex-1 py-4 px-4 rounded-lg border-2 font-semibold transition-all text-lg ${
-                          willStay === value
-                            ? "border-gold bg-gold/10 text-primary"
-                            : "border-border text-muted-foreground hover:border-gold/50"
-                        }`}
-                      >
-                        {value ? "Sim" : "Não"}
-                      </button>
-                    ))}
-                  </div>
-                  {error && <div className="text-destructive text-sm mt-4">{error}</div>}
-                </motion.div>
-              )}
-
-              {/* Arrival Day Step */}
-              {step === "day" && (
-                <motion.div
-                  initial={{ opacity: 0, y: 10 }}
-                  animate={{ opacity: 1, y: 0 }}
-                  exit={{ opacity: 0, y: -10 }}
-                >
-                  <h2 className="text-3xl font-display text-primary mb-2">Qual dia você chega?</h2>
-                  <p className="text-muted-foreground mb-6">Quando você estará lá?</p>
-                  <div className="space-y-3">
-                    {(["friday", "saturday"] as const).map((day) => (
-                      <button
-                        key={day}
-                        onClick={() => {
-                          setArrivalDay(day);
-                          setError("");
-                        }}
-                        className={`w-full py-4 px-4 rounded-lg border-2 font-semibold transition-all text-lg text-left ${
-                          arrivalDay === day
-                            ? "border-gold bg-gold/10 text-primary"
-                            : "border-border text-muted-foreground hover:border-gold/50"
-                        }`}
-                      >
-                        {day === "friday" ? "Sexta-feira (após as 17h)" : "Sábado (após as 07h)"}
-                      </button>
-                    ))}
-                  </div>
-                  {error && <div className="text-destructive text-sm mt-4">{error}</div>}
-                </motion.div>
-              )}
-
               {/* Confirmation Step */}
               {step === "confirmation" && (
                 <motion.div
@@ -665,7 +664,7 @@ const RSVPModal = ({ isOpen, onClose }: RSVPModalProps) => {
                     disabled={!isStepComplete() || isLoading}
                     className="flex-1 bg-primary text-primary-foreground hover:opacity-90 disabled:opacity-50 py-3 flex items-center justify-center gap-2"
                   >
-                    {step === "day" || (step === "stay" && !willStay) ? (
+                    {step === "day" || (step === "has-children" && !hasChildrenFlag) || (step === "children" && currentChildIndex === childrenCount - 1) ? (
                       <>
                         {isLoading ? "Confirmando..." : "Confirmar"}
                       </>
