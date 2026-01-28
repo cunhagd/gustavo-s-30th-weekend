@@ -1,23 +1,25 @@
 import { motion, useInView } from "framer-motion";
-import { useRef } from "react";
-import { MessageCircle, Shirt, BedDouble, CheckCircle } from "lucide-react";
+import { useRef, useState } from "react";
+import { Shirt, BedDouble, CheckCircle } from "lucide-react";
+import RSVPModal from "@/components/modals/RSVPModal";
 
 const checklist = [
   {
     icon: Shirt,
     title: "Traje",
-    description: "Leve roupa de banho! A festa de sábado acontece ao redor da piscina. Para a noite, leve um agasalho leve (climinha de montanha)."
+    description: "Leve roupa de banho! A festa de sábado acontece ao redor da piscina. Para a noite, leve um agasalho leve (climinha de montanha).",
   },
   {
     icon: BedDouble,
     title: "Levar na Necessaire",
-    description: "Estaremos em amebiente de mata, é importante não esquecer do repelente e o protetor solar para a piscina."
-  }
+    description: "Estaremos em ambiente de mata, é importante não esquecer do repelente e o protetor solar para a piscina.",
+  },
 ];
 
 const RSVPSection = () => {
   const ref = useRef(null);
   const isInView = useInView(ref, { once: true, margin: "-100px" });
+  const [isRSVPModalOpen, setIsRSVPModalOpen] = useState(false);
 
   return (
     <section className="py-24 lg:py-32 bg-gradient-section">
@@ -94,21 +96,20 @@ const RSVPSection = () => {
                 Confirmação de Presença
               </h3>
               <p className="font-body text-muted-foreground text-lg mb-8 max-w-xl mx-auto">
-                Para organizarmos as suítes e o buffet com perfeição, confirme sua presença até <strong className="text-foreground">15 de Fevereiro de 2026</strong>.
+                Para organizarmos as suítes e o buffet com perfeição, confirme sua presença até{" "}
+                <strong className="text-foreground">15 de Fevereiro de 2026</strong>.
               </p>
 
-              <motion.a
-                href="https://wa.me/5531999999999?text=Olá!%20Quero%20confirmar%20minha%20presença%20no%20aniversário%20do%20Gustavo!"
-                target="_blank"
-                rel="noopener noreferrer"
-                whileHover={{ scale: 1.02 }}
-                whileTap={{ scale: 0.98 }}
-                className="inline-flex items-center gap-3 bg-[#25D366] text-white py-4 px-8 rounded-full font-body font-semibold text-lg hover:bg-[#128C7E] transition-colors shadow-elevated"
+              <button
+                onClick={() => setIsRSVPModalOpen(true)}
+                className="inline-flex items-center gap-3 bg-primary text-primary-foreground py-4 px-8 rounded-full font-body font-semibold text-lg hover:opacity-90 transition-opacity shadow-elevated"
               >
-                <MessageCircle className="w-6 h-6" />
-                Confirmar no WhatsApp
-              </motion.a>
+                <CheckCircle className="w-6 h-6" />
+                Confirmar Presença
+              </button>
             </div>
+
+            <RSVPModal isOpen={isRSVPModalOpen} onClose={() => setIsRSVPModalOpen(false)} />
           </motion.div>
 
           {/* Closing Message */}
