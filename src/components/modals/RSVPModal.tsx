@@ -158,6 +158,33 @@ const RSVPModal = ({ isOpen, onClose }: RSVPModalProps) => {
 
   const handleSubmit = async () => {
     if (isLoading) return;
+    
+    // Validações básicas
+    if (!name || !age || !phone) {
+      setError("Por favor preencha todos os campos obrigatórios");
+      return;
+    }
+    
+    if (hasChildrenFlag === null) {
+      setError("Por favor responda se vai levar crianças");
+      return;
+    }
+    
+    if (willStay === null) {
+      setError("Por favor responda se vai dormir");
+      return;
+    }
+    
+    if (willStay && !arrivalDay) {
+      setError("Por favor selecione o dia de chegada");
+      return;
+    }
+    
+    if (hasChildrenFlag && children.length === 0) {
+      setError("Por favor adicione os dados das crianças");
+      return;
+    }
+    
     setIsLoading(true);
     setError("");
 
@@ -171,9 +198,9 @@ const RSVPModal = ({ isOpen, onClose }: RSVPModalProps) => {
           name,
           age: Number(age),
           phone,
-          hasChildren: hasChildrenFlag,
+          hasChildren: hasChildrenFlag === true,
           children: hasChildrenFlag ? children : [],
-          willStay,
+          willStay: willStay === true,
           arrivalDay: willStay ? arrivalDay : undefined,
         }),
       });
