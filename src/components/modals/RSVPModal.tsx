@@ -14,8 +14,7 @@ const API_URL = import.meta.env.VITE_API_URL || "http://localhost:3001/api";
 const STEP_EMOJIS: Record<string, string> = {
   name: "👤",
   age: "🎂",
-  phone: "📱",
-  ddd: "📍",
+  ddd: "📱",
   number: "🔢",
   stay: "🏨",
   day: "📅",
@@ -23,7 +22,7 @@ const STEP_EMOJIS: Record<string, string> = {
 };
 
 const RSVPModal = ({ isOpen, onClose }: RSVPModalProps) => {
-  const [step, setStep] = useState<"name" | "age" | "phone" | "ddd" | "number" | "stay" | "day" | "confirmation">("name");
+  const [step, setStep] = useState<"name" | "age" | "ddd" | "number" | "stay" | "day" | "confirmation">("name");
   const [isLoading, setIsLoading] = useState(false);
   const [error, setError] = useState("");
 
@@ -74,8 +73,6 @@ const RSVPModal = ({ isOpen, onClose }: RSVPModalProps) => {
         setError("Idade deve ser entre 1 e 120");
         return;
       }
-      setStep("phone");
-    } else if (step === "phone") {
       setStep("ddd");
     } else if (step === "ddd") {
       if (!isDDDValid) {
@@ -114,8 +111,6 @@ const RSVPModal = ({ isOpen, onClose }: RSVPModalProps) => {
     } else if (step === "number") {
       setStep("ddd");
     } else if (step === "ddd") {
-      setStep("phone");
-    } else if (step === "phone") {
       setStep("age");
     } else if (step === "age") {
       setStep("name");
@@ -202,8 +197,6 @@ const RSVPModal = ({ isOpen, onClose }: RSVPModalProps) => {
         return isNameValid;
       case "age":
         return isAgeValid;
-      case "phone":
-        return true;
       case "ddd":
         return isDDDValid;
       case "number":
@@ -220,7 +213,7 @@ const RSVPModal = ({ isOpen, onClose }: RSVPModalProps) => {
   };
 
   // Calcular progresso
-  const steps: typeof step[] = ["name", "age", "phone", "ddd", "number", "stay"];
+  const steps: typeof step[] = ["name", "age", "ddd", "number", "stay"];
   if (willStay) {
     steps.push("day");
   }
@@ -334,10 +327,10 @@ const RSVPModal = ({ isOpen, onClose }: RSVPModalProps) => {
                   </motion.div>
                 )}
 
-                {/* Phone Info Step */}
-                {step === "phone" && (
+                {/* DDD Step */}
+                {step === "ddd" && (
                   <motion.div
-                    key="phone"
+                    key="ddd"
                     initial={{ opacity: 0, x: 20 }}
                     animate={{ opacity: 1, x: 0 }}
                     exit={{ opacity: 0, x: -20 }}
@@ -348,20 +341,8 @@ const RSVPModal = ({ isOpen, onClose }: RSVPModalProps) => {
                       No formato (XX)XXXXX-XXXX (8 ou 9 dígitos)<br />
                       <span className="text-sm">Só entrarei em contato caso realmente seja necessário</span>
                     </p>
-                  </motion.div>
-                )}
-
-                {/* DDD Step */}
-                {step === "ddd" && (
-                  <motion.div
-                    key="ddd"
-                    initial={{ opacity: 0, x: 20 }}
-                    animate={{ opacity: 1, x: 0 }}
-                    exit={{ opacity: 0, x: -20 }}
-                    transition={{ duration: 0.3 }}
-                  >
-                    <h2 className="text-3xl font-display text-primary mb-2">DDD</h2>
-                    <p className="text-muted-foreground mb-6">Digite 2 dígitos</p>
+                    <div className="mt-4 pt-4 border-t border-border">
+                      <p className="text-muted-foreground mb-4 text-sm">Digite o DDD (2 dígitos):</p>
                     <Input
                       value={phoneDDD}
                       onChange={(e) => handleDDDInput(e.target.value)}
@@ -371,6 +352,7 @@ const RSVPModal = ({ isOpen, onClose }: RSVPModalProps) => {
                       onKeyPress={(e) => e.key === "Enter" && isDDDValid && handleNextStep()}
                       autoFocus
                     />
+                    </div>
                   </motion.div>
                 )}
 
@@ -519,7 +501,7 @@ const RSVPModal = ({ isOpen, onClose }: RSVPModalProps) => {
             </div>
 
             {/* Navigation Buttons */}
-            {step !== "confirmation" && step !== "phone" && (
+            {step !== "confirmation" && (
               <div className="flex gap-3 mt-8">
                 {step !== "name" && (
                   <Button
